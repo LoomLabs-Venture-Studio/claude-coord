@@ -1,0 +1,42 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "type": "command",
+        "command": "claude-coord register --agent \"${CLAUDE_SESSION_ID:-auto}\" --name \"${CLAUDE_TERMINAL_TITLE:-Claude Agent}\""
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit|CreateFile",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "claude-coord check --acquire \"$CLAUDE_FILE_PATHS\" --agent \"${CLAUDE_SESSION_ID:-auto}\" --op \"Modifying files\""
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit|CreateFile",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "claude-coord heartbeat --agent \"${CLAUDE_SESSION_ID:-auto}\""
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "claude-coord deregister --agent \"${CLAUDE_SESSION_ID:-auto}\" --release-all"
+          }
+        ]
+      }
+    ]
+  }
+}

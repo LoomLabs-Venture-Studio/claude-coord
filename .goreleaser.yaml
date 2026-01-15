@@ -1,0 +1,56 @@
+# GoReleaser configuration
+# See: https://goreleaser.com
+
+version: 2
+
+project_name: claude-coord
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - main: ./cmd/claude-coord
+    binary: claude-coord
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    ldflags:
+      - -s -w
+      - -X main.Version={{.Version}}
+
+archives:
+  - format: tar.gz
+    name_template: "{{ .ProjectName }}-{{ .Os }}-{{ .Arch }}"
+    format_overrides:
+      - goos: windows
+        format: zip
+
+checksum:
+  name_template: "checksums.txt"
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+      - "^ci:"
+
+brews:
+  - repository:
+      owner: LoomLabs-Venture-Studio
+      name: homebrew-tap
+    homepage: https://github.com/LoomLabs-Venture-Studio/claude-coord
+    description: Coordinate multiple Claude Code agents
+    license: MIT
+    install: |
+      bin.install "claude-coord"
+    test: |
+      system "#{bin}/claude-coord", "--help"

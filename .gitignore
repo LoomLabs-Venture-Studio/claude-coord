@@ -1,0 +1,22 @@
+# Binaries
+bin/
+dist/
+*.exe
+
+# Test artifacts
+coverage.out
+*.test
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Local testing
+.claude-coord/locks/
+.claude-coord/agents/

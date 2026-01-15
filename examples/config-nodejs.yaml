@@ -1,0 +1,66 @@
+# Example configuration for a Node.js/TypeScript project
+version: 1
+
+protected:
+  # Database
+  - pattern: "prisma/schema.prisma"
+    name: "Prisma Schema"
+    description: "Database schema - changes affect all models"
+    
+  - pattern: "prisma/migrations/**/*"
+    name: "Prisma Migrations"
+    description: "Migration order matters"
+    
+  - pattern: "drizzle/**/*"
+    name: "Drizzle Schema"
+    
+  # Package management
+  - pattern: "package.json"
+    name: "NPM Config"
+    description: "Dependencies and scripts"
+    
+  - pattern: "package-lock.json"
+    name: "NPM Lock"
+    description: "Dependency versions"
+    
+  - pattern: "pnpm-lock.yaml"
+    name: "PNPM Lock"
+    
+  # Configuration
+  - pattern: ".env*"
+    name: "Environment"
+    description: "Environment variables"
+    
+  - pattern: "*.config.{js,ts,mjs,cjs}"
+    name: "Config Files"
+    description: "Build and tool configuration"
+    
+  - pattern: "tsconfig*.json"
+    name: "TypeScript Config"
+    
+  # Infrastructure
+  - pattern: "docker-compose*.yml"
+    name: "Docker Compose"
+    
+  - pattern: "Dockerfile*"
+    name: "Dockerfile"
+
+# Logical resources - groups of files that should be modified together
+logical:
+  - name: "auth-system"
+    description: "Authentication flow"
+    files:
+      - "src/auth/**/*"
+      - "src/middleware/auth*"
+      - "prisma/schema.prisma"  # User model
+      
+  - name: "api-routes"
+    description: "API endpoint definitions"
+    files:
+      - "src/routes/**/*"
+      - "src/controllers/**/*"
+
+settings:
+  default_ttl: 300          # 5 minutes
+  stale_threshold: 120      # 2 minutes
+  heartbeat_interval: 30    # 30 seconds
