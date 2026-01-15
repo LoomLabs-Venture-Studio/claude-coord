@@ -1,6 +1,8 @@
 # claude-coord
 
-Lightweight coordination for multiple Claude Code agents working in the same codebase.
+When multiple Claude Code agents (or other automated contributors) work in the same repository, they can silently overwrite each other — especially migrations, schemas, and shared config files. This leads to broken builds, corrupted state, and hard-to-debug CI failures.
+
+claude-coord is a lightweight coordination layer that adds file-level locking to prevent concurrent agents from modifying protected files at the same time.
 
 ## The Problem
 
